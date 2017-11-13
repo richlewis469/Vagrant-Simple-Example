@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Defining Some Oracle / Use Case Flags
+if Vagrant::Util::Platform.windows? then
+  onWindows = true
+  # Define if we are on the TeleWorker VPN
+  onVPN = system( "ipconfig /all | findstr OpenVPN >nul" )
+  # Define if we are on the Oracle Internal (Corporate) Network using the proxy.
+  onWAN = system( "ping -n 1 proxy.lab.net >nul" )
+else
+  onWindows = false
+  # Define if we are on the TeleWorker VPN
+  onVPN = system( "ifconfig -a | grep OpenVPN >> /dev/null" )
+  # Define if we are on the Oracle Internal (Corporate) Network using the proxy.
+  onWAN = system( "ping -c 1 proxy.lab.net >nul" )
+end
+# Set a Proxy environment variable for Oracle.
+if onOwan then
+  ENV['http_proxy'] = 'http://proxy.lab.net:80'
+  ENV['https_proxy'] = 'http://proxy.lab.net:80'
+end
+
+Vagrant.configure("2") do |config|
+
+  # Setup the proxy configuration to work on the Oracle Network if required.
+  if Vagrant.has_plugin?("vagrant-proxyconf") && onOwan
+    config.proxy.http     = "#{ENV['http_proxy']}"
+    config.proxy.https    = "#{ENV['https_proxy']}"
+    config.proxy.no_proxy = "localhost,127.0.0.1,192.168.0.0/16"
+  end
+
+  # From - https://stackoverflow.com/questions/26811089/vagrant-how-to-have-host-platform-specific-provisioning-steps
+  # Define the network to use when on Windows and Cisco AnyConnect TeleWorker VPN
+  if Vagrant::Util::Platform.windows? && onVPN then
+    # When using Windows and connected via the Teleworker VPN, we set this...
+    config.vm.network "public_network", bridge: "OpenVPN Miniport Adapter for Windows x64"
+  else
+    # By default define the network as the public_network interface.
+    config.vm.network "public_network"
+  end
+
+end
