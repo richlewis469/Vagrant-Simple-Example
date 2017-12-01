@@ -16,7 +16,7 @@ else
   onWAN = system( "ping -c 1 proxy.lab.net >nul" )
 end
 # Set a Proxy environment variable for Oracle.
-if onOwan then
+if onWAN then
   ENV['http_proxy'] = 'http://proxy.lab.net:80'
   ENV['https_proxy'] = 'http://proxy.lab.net:80'
 end
@@ -24,7 +24,7 @@ end
 Vagrant.configure("2") do |config|
 
   # Setup the proxy configuration to work on the Oracle Network if required.
-  if Vagrant.has_plugin?("vagrant-proxyconf") && onOwan
+  if Vagrant.has_plugin?("vagrant-proxyconf") && onWAN
     config.proxy.http     = "#{ENV['http_proxy']}"
     config.proxy.https    = "#{ENV['https_proxy']}"
     config.proxy.no_proxy = "localhost,127.0.0.1,192.168.0.0/16"
