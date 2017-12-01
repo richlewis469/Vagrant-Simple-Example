@@ -2,6 +2,7 @@
 
 # Enable provisioning of the client with a shell script.
 echo "Entering Shell Provisoning"
+
 /bin/rm /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel-testing.repo
 yum makecache fast
 yum install deltarpm -y
