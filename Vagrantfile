@@ -22,9 +22,11 @@ end
 ##############################################################################
 Vagrant.configure("2") do |config|
 
-  # This demo will use Oracle Linux 7.3 mini server image.
-  # You can search for boxes at https://vagrantcloud.com/search.
-  config.vm.box = "oravirt/ol73"
+  # This demo will use Oracle Linux 7 server image.
+  # You can search for boxes from the Vagrant Cloud at https://vagrantcloud.com/search
+  # or Oracle Linux boxes at http://yum.oracle.com/boxes
+  config.vm.box_url = "http://yum.oracle.com/boxes/oraclelinux/ol74/ol74.box"
+  config.vm.box = "ol74"
 
   # Share an additional folder to the guest VM, default is "share" in the current directory.
   config.vm.synced_folder "vagrant-share", "/vagrant-share"
