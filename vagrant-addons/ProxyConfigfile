@@ -1,24 +1,27 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Defining Some Oracle / Use Case Flags
+proxyServer = "proxy.lab.net"
+proxyServerPort = "80"
+
+# Defining Some Use Case Flags
 if Vagrant::Util::Platform.windows? then
   onWindows = true
   # Define if we are on the TeleWorker VPN
   onVPN = system( "ipconfig /all | findstr OpenVPN >nul" )
   # Define if we are on the Oracle Internal (Corporate) Network using the proxy.
-  onWAN = system( "ping -n 1 proxy.lab.net >nul" )
+  onWAN = system( "ping -n 1 #{proxyServer} >nul" )
 else
   onWindows = false
   # Define if we are on the TeleWorker VPN
   onVPN = system( "ifconfig -a | grep OpenVPN >> /dev/null" )
   # Define if we are on the Oracle Internal (Corporate) Network using the proxy.
-  onWAN = system( "ping -c 1 proxy.lab.net >nul" )
+  onWAN = system( "ping -c 1 #{proxyServer} >nul" )
 end
 # Set a Proxy environment variable for Oracle.
 if onWAN then
-  ENV['http_proxy'] = 'http://proxy.lab.net:80'
-  ENV['https_proxy'] = 'http://proxy.lab.net:80'
+  ENV['http_proxy'] = "http://#{proxyServer}:#{proxyServerPort}"
+  ENV['https_proxy'] = "http://#{proxyServer}:#{proxyServerPort}"
 end
 
 Vagrant.configure("2") do |config|

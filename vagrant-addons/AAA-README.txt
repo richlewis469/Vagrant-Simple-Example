@@ -1,1 +1,1 @@
-Copy or rename ProxyConfigFile.git to ProxyConfigFile .
+Edit the file vagrant-addons/ProxyConfigFile as required for proxy settings.
