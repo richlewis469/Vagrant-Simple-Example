@@ -23,7 +23,11 @@ end
 Vagrant.configure("2") do |config|
 
   # This demo will use Oracle Linux 7 server image.
+
   # You can search for boxes from the Vagrant Cloud at https://vagrantcloud.com/search
+  # config.vm.box = "oravirt/ol73"
+  # config.vm.box = "oravirt/ol74"
+
   # or Oracle Linux boxes at http://yum.oracle.com/boxes
   config.vm.box_url = "http://yum.oracle.com/boxes/oraclelinux/ol74/ol74.box"
   config.vm.box = "ol74"
